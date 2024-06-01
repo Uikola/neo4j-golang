@@ -28,7 +28,7 @@ func (h Handler) Save(w http.ResponseWriter, r *http.Request) {
 	}
 
 	host := entity.Host{
-		Hostname:   r.Host,
+		Hostname:   r.RemoteAddr,
 		Interfaces: interfaces,
 	}
 
