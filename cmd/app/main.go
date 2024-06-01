@@ -8,7 +8,6 @@ import (
 	server "github.com/Uikola/neo4j-golang/internal/server/http"
 	"github.com/Uikola/neo4j-golang/internal/server/http/host"
 	"github.com/Uikola/neo4j-golang/pkg/zlog"
-	"github.com/joho/godotenv"
 	"github.com/rs/zerolog/log"
 	"net/http"
 	"os"
@@ -24,11 +23,6 @@ func main() {
 	ctx := context.Background()
 	ctx, cancel := signal.NotifyContext(ctx, os.Interrupt)
 	defer cancel()
-
-	if err := godotenv.Load(); err != nil {
-		log.Error().Msg(err.Error())
-		os.Exit(1)
-	}
 
 	log.Logger = zlog.Default(true, "dev", DEBUGLEVEL)
 
