@@ -5,13 +5,22 @@ import (
 	"github.com/Uikola/neo4j-golang/internal/entity"
 	cloudevents "github.com/cloudevents/sdk-go/v2"
 	"github.com/rs/zerolog/log"
+	"io"
 	"net/http"
 )
 
 func (h Handler) Save(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	event := cloudevents.NewEvent()
-	log.Info().Any("body", r.Body).Msg("bug")
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		log.Error().Err(err).Msg("failed to decode request")
+		w.WriteHeader(http.StatusBadRequest)
+		_ = json.NewEncoder(w).Encode(map[string]string{"reason": "failed to read body"})
+		return
+	}
+
+	log.Info().Msg(string(body))
 
 	if err := json.NewDecoder(r.Body).Decode(&event); err != nil {
 		log.Error().Err(err).Msg("failed to decode request")
