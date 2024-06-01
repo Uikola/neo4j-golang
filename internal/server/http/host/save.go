@@ -11,6 +11,7 @@ import (
 func (h Handler) Save(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	event := cloudevents.NewEvent()
+	log.Info().Any("body", r.Body).Msg("bug")
 
 	if err := json.NewDecoder(r.Body).Decode(&event); err != nil {
 		log.Error().Err(err).Msg("failed to decode request")
